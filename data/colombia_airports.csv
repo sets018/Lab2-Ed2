@@ -1,0 +1,43 @@
+Airport Name,ICAO,IATA,City served,Category
+El Edén International Airport,SKAR,AXM,Armenia,International
+Ernesto Cortissoz International Airport,SKBQ,BAQ,Barranquilla,International
+El Dorado International Airport,SKBO,BOG,Bogotá,International
+Palonegro International Airport,SKBG,BGA,Bucaramanga ,International
+Alfonso Bonilla Aragón International Airport,SKCL,CLO,Cali,International
+Rafael Núñez International Airport,SKCG,CTG,Cartagena,International
+Camilo Daza International Airport,SKCC,CUC,Cúcuta,International
+Alfredo Vásquez Cobo International Airport,SKLT,LET,Leticia,International
+José María Córdova International Airport,SKRG,MDE,Medellín ,International
+Matecaña International Airport,SKPE,PEI,Pereira,International
+Gustavo Rojas Pinilla International Airport,SKSP,ADZ,San Andrés,International
+Simón Bolívar International Airport,SKSM,SMR,Santa Marta,International
+Antonio Roldán Betancourt Airport,SKLC,APO,Apartadó,Domestic
+Santiago Pérez Quiroz Airport,SKUC,AUC,Arauca,Domestic
+José Celestino Mutis Airport,SKBS,BSC,Bahía Solano,Domestic
+Yariguíes Airport,SKEJ,EJA,Barrancabermeja,Domestic
+Gerardo Tobar López Airport,SKBU,BUN,Buenaventura,Domestic
+Las Brujas Airport,SKCZ,CZU,Corozal,Domestic
+El Alcaraván Airport,SKYP,EYP,Yopal (El Yopal),Domestic
+Gustavo Artunduaga Paredes Airport,SKFL,FLA,Florencia,Domestic
+Juan Casiano Airport,SKGP,GPI,Guapi,Domestic
+Perales Airport,SKIB,IBE,Ibagué,Domestic
+La Nubia Airport,SKMZ,MZL,Manizales,Domestic
+Enrique Olaya Herrera Airport,SKMD,EOH,Medellín,Domestic
+Fabio Alberto León Bentley Airport,SKMU,MVP,Mitú,Domestic
+Los Garzones Airport,SKMR,MTR,Montería,Domestic
+Benito Salas Airport,SKNV,NVA,Neiva,Domestic
+Antonio Nariño Airport,SKPS,PSO,Pasto / Chachagüí,Domestic
+Guillermo León Valencia Airport,SKPP,PPN,Popayán,Domestic
+El Embrujo Airport,SKPV,PVA,Providencia Island,Domestic
+Tres de Mayo Airport,SKAS,PUU,Puerto Asís,Domestic
+Germán Olano Airport,SKPC,PCR,Puerto Carreño,Domestic
+El Caraño Airport,SKUI,UIB,Quibdó,Domestic
+Almirante Padilla Airport,SKRH,RCH,Riohacha,Domestic
+Jorge Enrique González Torres Airport,SKSJ,SJE,San José del Guaviare,Domestic
+Eduardo Falla Solano Airport,SKSV,SVI,San Vicente del Caguán,Domestic
+Los Colonizadores Airport,SKSA,RVE,Saravena,Domestic
+Gabriel Vargas Santos Airport,SKTM,TME,Tame,Domestic
+Golfo de Morrosquillo Airport,SKTL,TLU,Tolú,Domestic
+La Florida Airport,SKCO,TCO,Tumaco,Domestic
+Alfonso López Pumarejo Airport,SKVP,VUP,Valledupar,Domestic
+Vanguardia Airport,SKVV,VVC,Villavicencio,Domestic
