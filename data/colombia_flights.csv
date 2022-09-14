@@ -1,8 +1,4 @@
-﻿FUENTE: BASE DE DATOS ORIGEN DESTINO,,,,,,,,,,,,,,,,
-FECHA: 7 DE SEPTIEMBRE 2022,,,,,,,,,,,,,,,,
-UNIDAD ADMINISTRATIVA ESPECIAL AERONÁUTICA CIVIL,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-Sigla Empresa,Nombre,Fecha,Año,Número de Mes,Origen,Nombre,Ciudad Origen,Pais Origen,Destino,Nombre,Ciudad Destino,Pais Destino,Tráfico (N/I),Tipo Vuelo,Pasajeros,Carga + Correo (Kg)
+﻿Sigla Empresa,Nombre,Fecha,Año,Número de Mes,Origen,Nombre,Ciudad Origen,Pais Origen,Destino,Nombre,Ciudad Destino,Pais Destino,Tráfico (N/I),Tipo Vuelo,Pasajeros,Carga + Correo (Kg)
 0EC,SAE,01-Jul-22 00:00:00,2022,7,7HM,LLANO CAUCHO,CUMARIBO,COLOMBIA,A07,MORICHAL VIEJO,SAN JOSE DEL GUAVIARE,COLOMBIA,N,T,0,45
 0EC,SAE,01-Jul-22 00:00:00,2022,7,7HM,LLANO CAUCHO,CUMARIBO,COLOMBIA,PCE,CUMARIBO,PUERTO CARRENO,COLOMBIA,N,T,0,0
 0EC,SAE,01-Jul-22 00:00:00,2022,7,7HM,LLANO CAUCHO,CUMARIBO,COLOMBIA,VVC,VANGUARDIA,VILLAVICENCIO,COLOMBIA,N,T,0,0
