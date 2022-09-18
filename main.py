@@ -29,7 +29,7 @@ class data():
      for code in self.codes:
       self.airports_codes.append(code)
      self.get_flights()
-  def get_flights():
+  def get_flights(self):
     self.colombia_flights = self.colombia_flights[(self.colombia_flights["Origen"].isin(self.airports_codes)) & (self.colombia_flights["Destino"].isin(self.airports_codes))]
     self.colombia_flights_real = self.colombia_flights[self.colombia_flights["Tipo Vuelo"] == 'R']
     self.colombia_flights_real['lines'] = self.colombia_flights_real["Origen"] + '-' + self.colombia_flights_real["Destino"]
@@ -40,7 +40,7 @@ class data():
       for city_code in self. cities: 
         city_coords = (float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lng"]))
         self.lines_points.append(city_coords)
-  def create_map(): 
+  def create_map(self): 
     # Creates map object
     self.map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
     for city in range(0, self.n_cities):
