@@ -54,6 +54,5 @@ st.set_page_config(
 )
 st.title('Flight map')
 st.write('Placeholder') 
-load_data()
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
 map_data.create_map()
