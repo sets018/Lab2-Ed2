@@ -42,13 +42,13 @@ class data():
       for city_code in self. cities: 
         city_coords = (float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lng"]))
         self.lines_points.append(city_coords)
-   def create_map(): 
-      # Creates map object
-      self.map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
-      for city in range(0, self.n_cities):
-        folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
-        lines = folium.PolyLine(lines_points).add_to(self.map)
-      return st.markdown(self.map._repr_html_(), unsafe_allow_html=True)
+  def create_map(): 
+    # Creates map object
+    self.map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+    for city in range(0, self.n_cities):
+      folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
+      lines = folium.PolyLine(lines_points).add_to(self.map)
+    return st.markdown(self.map._repr_html_(), unsafe_allow_html=True)
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
