@@ -3,15 +3,14 @@ import numpy as np
 import streamlit as st
 import folium 
 
-def load_data(): 
-  colombia_airports_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_airports.csv"
-  colombia_airports = pd.read_csv(colombia_airports_url)
-  colombia_cities_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_cities.csv"
-  colombia_cities = pd.read_csv(colombia_cities_url)
-  colombia_cities = colombia_cities[colombia_cities["country"] == "Colombia"]
-  colombia_flights_url = 'https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_flights.csv'
-  colombia_flights = pd.read_csv(colombia_flights_url)
-  colombia_flights = colombia_flights[(colombia_flights["Pais Origen"] == "COLOMBIA") & (colombia_flights["Pais Destino"] == "COLOMBIA")]
+colombia_airports_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_airports.csv"
+colombia_airports = pd.read_csv(colombia_airports_url)
+colombia_cities_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_cities.csv"
+colombia_cities = pd.read_csv(colombia_cities_url)
+colombia_cities = colombia_cities[colombia_cities["country"] == "Colombia"]
+colombia_flights_url = 'https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_flights.csv'
+colombia_flights = pd.read_csv(colombia_flights_url)
+colombia_flights = colombia_flights[(colombia_flights["Pais Origen"] == "COLOMBIA") & (colombia_flights["Pais Destino"] == "COLOMBIA")]
   
 class data():
   def __init__(self, colombia_airports, colombia_cities, colombia_flights):
