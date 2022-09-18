@@ -38,7 +38,7 @@ class data():
     self.lines = self.colombia_flights_real["lines"].unique()
     self.lines_points = []
     for line in self.lines:
-    self.cities = line.split("-")
+      self.cities = line.split("-")
       for city_code in self. cities: 
         city_coords = (float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lng"]))
         self.lines_points.append(city_coords)
