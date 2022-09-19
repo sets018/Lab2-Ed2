@@ -1,5 +1,6 @@
 import pandas as pd 
 import numpy as np
+from streamlit_folium import st_folium
 import streamlit as st
 import folium 
 
@@ -46,7 +47,7 @@ class data():
     for city in range(0, self.n_cities):
       folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
       lines = folium.PolyLine(self.lines_points).add_to(map)
-    return st.markdown(map._repr_html_(), unsafe_allow_html=True)
+    map_fig = st_folium(map, key="fig1", width=700, height=700)
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
