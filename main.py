@@ -4,10 +4,10 @@ from streamlit_folium import st_folium
 import streamlit as st
 import folium 
 from math import radians, cos, sin, asin, acos, sqrt, pi
-#from geopy import distance
-#from geopy.geocoders import Nominatim
-#import osmnx as ox
-#import networkx as nx
+from geopy import distance
+from geopy.geocoders import Nominatim
+import osmnx as ox
+import networkx as nx
 colombia_airports_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_airports.csv"
 colombia_airports = pd.read_csv(colombia_airports_url)
 colombia_cities_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_cities.csv"
@@ -55,20 +55,20 @@ class data():
         city_1,city_2 = cities[i],cities[i+1]
         lat_1,lng_1 = float(data.cities_airports[data.cities_airports["IATA"] == city_1]["lat"]),float(data.cities_airports[data.cities_airports["IATA"] == city_1]["lng"])
         lat_2,lng_2 = float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lat"]),float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lng"])
-        #distance = distance(lat_1, lng_1, lat_2, lng_2, r=6371)
+        distance = distance(lat_1, lng_1, lat_2, lng_2, r=6371)
       lines_distance.update({line: distance})
-  #def calculate_spherical_distance(lat1, lon1, lat2, lon2, r=6371):
-    # Convert degrees to radians
-    #coordinates = lat1, lon1, lat2, lon2
-    # radians(c) is same as c*pi/180
-    #phi1, lambda1, phi2, lambda2 = [
-        #radians(c) for c in coordinates
-    #] 
+  def calculate_spherical_distance(lat1, lon1, lat2, lon2, r=6371):
+    Convert degrees to radians
+    coordinates = lat1, lon1, lat2, lon2
+    radians(c) is same as c*pi/180
+    phi1, lambda1, phi2, lambda2 = [
+        radians(c) for c in coordinates
+    ] 
     # Apply the haversine formula
-    #a = (np.square(sin((phi2-phi1)/2)) + cos(phi1) * cos(phi2) * 
-        # np.square(sin((lambda2-lambda1)/2)))
-    #d = 2*r*asin(np.sqrt(a))
-    #return d
+    a = (np.square(sin((phi2-phi1)/2)) + cos(phi1) * cos(phi2) * 
+        np.square(sin((lambda2-lambda1)/2)))
+    d = 2*r*asin(np.sqrt(a))
+    return d
   def create_map(self): 
     # Creates map object
     map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
