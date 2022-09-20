@@ -57,7 +57,7 @@ class data():
         lat_2,lng_2 = float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lat"]),float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lng"])
         distance = distance(lat_1, lng_1, lat_2, lng_2, r=6371)
       lines_distance.update({line: distance})
-def calculate_spherical_distance(lat1, lon1, lat2, lon2, r=6371):
+  def calculate_spherical_distance(lat1, lon1, lat2, lon2, r=6371):
     # Convert degrees to radians
     coordinates = lat1, lon1, lat2, lon2
     # radians(c) is same as c*pi/180
