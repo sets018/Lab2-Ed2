@@ -45,19 +45,18 @@ class data():
       for city_code in self. cities: 
         city_coords = (float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lng"]))
         self.lines_points.append(city_coords)
+    self.get_distances(self.cities_airports, self.lines)
   def get_distances(self,cities_airports,lines):
-    cities_airports = self.cities_airports
-    lines = self.lines 
-    lines_distance = {}
+    self.lines_distance = {}
     for line in lines:
       cities = line.split("-")
       for i in range(0, len(cities), 2):
         city_1,city_2 = cities[i],cities[i+1]
-        lat_1,lng_1 = float(data.cities_airports[data.cities_airports["IATA"] == city_1]["lat"]),float(data.cities_airports[data.cities_airports["IATA"] == city_1]["lng"])
-        lat_2,lng_2 = float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lat"]),float(data.cities_airports[data.cities_airports["IATA"] == city_2]["lng"])
-        distance = distance(lat_1, lng_1, lat_2, lng_2, r=6371)
-      lines_distance.update({line: distance})
-  def calculate_spherical_distance(lat1, lon1, lat2, lon2, r=6371):
+        lat_1,lng_1 = float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lng"])
+        lat_2,lng_2 = float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lng"])
+        distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
+      self.lines_distance.update({line: distance})
+  def distance(self,lat1, lon1, lat2, lon2, r):
     #Convert degrees to radians
     coordinates = lat1, lon1, lat2, lon2
     #radians(c) is same as c*pi/180
@@ -76,6 +75,97 @@ class data():
       folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
       lines = folium.PolyLine(self.lines_points).add_to(map)
     map_fig = st_folium(map, key="fig1", width=700, height=700)
+  def get_nodes_dict(self):
+    self.vertices = []
+    for i in range(0, len(self.airports_codes)):
+      self.vertices.append(i)
+    self.nodes_dict = {}
+    i = 0
+    for city in self.airports_codes:
+       self.nodes_dict.update({city: i})
+       i = i + 1
+    self.get_edges()
+  def get_edges(self):
+    self.edges = []
+    for line in self.lines:
+      cities = line.split("-")
+      for i in range(0, len(cities), 2):
+        city_1,city_2 = cities[i],cities[i+1]
+        temp = (self.nodes_dict.get(city_1),self.nodes_dict.get(city_2))
+      self.edges.append(temp)
+    self.get_distances_coded(self.cities_airports, self.lines)
+  def get_distances_coded(self,cities_airports,lines):
+    self.lines_distance_coded = {}
+    for line in lines:
+      cities = line.split("-")
+      for i in range(0, len(cities), 2):
+        city_1,city_2 = cities[i],cities[i+1]
+        lat_1,lng_1 = float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lng"])
+        lat_2,lng_2 = float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lng"])
+        distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
+      line_coded = self.nodes_dict.get(city_1),self.nodes_dict.get(city_2)
+      self.lines_distance_coded.update({line_coded : distance})
+class graph():
+  def __init__(self, nodes, edges, distances):
+    self.nodes = nodes 
+    self.edges = edges 
+    self.distances = distances
+  def create_path_matrix(self):
+    self.path_matrix = [self.nodes]
+    for node in self.nodes:
+      np.append(self.path_matrix, [self.nodes], axis=0)
+  def create_matrix(self):
+    matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
+    for y in range(len(self.nodes)):
+      row = []
+      for x in range(len(self.nodes)):
+        row.append(0)
+    matrix.append(row)
+    return matrix
+  def create_ady_matrix(self):
+    self.ady_matrix = self.create_matrix()
+    for edge in self.edges:
+      x = edge[0]
+      y = edge[1]
+      self.ady_matrix[x - 1][y - 1] = 1
+  def create_dist_matrix(self):
+    self.dist_matrix = self.create_matrix()
+    for i in range(len(self.nodes)):
+      for j in range(len(self.nodes)):
+        x = self.nodes[i]
+        y = self.nodes[j]
+        pos_edge = x,y
+        dist = self.distances.get(pos_edge)
+        if (x == y):
+          self.dist_matrix[x - 1][y - 1] = 0
+        else:
+          dist = self.distances.get(pos_edge)
+          if (dist != None):
+            self.dist_matrix[x - 1][y - 1] = dist
+          else:
+            self.dist_matrix[x - 1][y - 1] = np.inf
+  def create_path_matrix(self):
+    self.path_matrix = self.create_matrix()
+    for x in range(len(self.nodes)):
+      for y in range(len(self.nodes)):
+        self.path_matrix[x][y] = str(x)
+  def floyd(self):
+    self.create_path_matrix()
+    self.create_ady_matrix()
+    self.create_dist_matrix()
+    for k in range(len(self.nodes)):
+      for i in range(len(self.nodes)):
+        for j in range(len(self.nodes)):
+          self.dist_matrix[i][j] = min(self.dist_matrix[i][j], self.dist_matrix[i][k] + self.dist_matrix[k][j])
+          self.path_matrix[i][j] = self.path_matrix[i][j] + ',' + str(k)
+  def print_results(self):
+   for x in range(len(self.nodes)):
+    for y in range(len(self.nodes)):
+      if(self.dist_matrix[x][y] == np.inf):
+        print("INF", end=" ")
+      else:
+        print(self.dist_matrix[x][y] , end="  ")
+        print(" ")
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
