@@ -26,6 +26,7 @@ class data():
   def join_data(self):
     self.colombia_cities_airports = pd.merge(colombia_cities, colombia_airports, how='inner', left_on = 'city', right_on = 'City served')
     self.cities_airports = self.colombia_cities_airports[["city","lat","lng","admin_name","id","Airport Name","ICAO","IATA","Category"]].copy()
+    self.city_list = self.map_data.cities_airports["city"]
     self.n_cities = self.cities_airports.shape[0]
     self.get_airports_codes()
   def get_airports_codes(self):
@@ -171,7 +172,52 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="auto",
 )
+
+class user_input():
+    def __init__(self, var, type, data, type_data, input_list):
+        self.var = var
+        self.type = type
+        self.data = data
+        self.type_data = type_data
+        self.input_list = input_list
+        self.get_input()
+    def get_input(self):
+        self.user_input = 'placeholder'
+        if (self.type == 'radio'):
+            self.get_radio()
+        elif (self.type == 'slider'):
+            self.get_slider()
+        self.input_list.append(self.user_input)
+    def get_radio(self):
+        if (self.type_data == 'dataframe'):
+            self.user_input = st.radio(
+                self.var,
+                np.unique(self.data.data_source[self.var]))
+        elif (self.type_data == 'list'):
+            self.user_input = st.radio(
+                self.var,
+                self.data)
+        st.write(self.var,": ",self.user_input)
+    def get_slider(self):
+        if (self.type_data == 'dataframe'):
+            self.user_input = st.slider(self.var, 0, max(self.data.data_source[self.var]), 1)
+        elif (self.type_data == 'list'):
+            self.user_input = st.slider(self.var, 0, max(self.data), 1)
+        st.write(self.var,": ",self.user_input)
+        
 st.title('Flight map')
 st.write('Placeholder') 
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
 map_data.create_map()
+
+with st.sidebar:
+  city_input = user_input(city_origin, 'radio', sectors.sectors_values, 'list', cat_input)
+            sectors.get_hoods(borough_input.user_input)
+        elif (column == 'neighborhood'):
+            hoods_input = user_input(column, 'radio', sectors.hood_list, 'list', cat_input)
+        else:
+            usr_input_cat = user_input(column, 'radio', df , 'dataframe', cat_input)
+            #cat_input.append(usr_input_cat.user_input)
+    for column in input_columns_num:
+        usr_input_num = user_input(column, 'slider', df, 'dataframe', num_input)
+        #num_input.append(usr_input_num.user_input)
