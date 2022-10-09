@@ -213,11 +213,3 @@ map_data.create_map()
 with st.sidebar:
   city_input = user_input(city_origin, 'radio', sectors.sectors_values, 'list', cat_input)
             sectors.get_hoods(borough_input.user_input)
-        elif (column == 'neighborhood'):
-            hoods_input = user_input(column, 'radio', sectors.hood_list, 'list', cat_input)
-        else:
-            usr_input_cat = user_input(column, 'radio', df , 'dataframe', cat_input)
-            #cat_input.append(usr_input_cat.user_input)
-    for column in input_columns_num:
-        usr_input_num = user_input(column, 'slider', df, 'dataframe', num_input)
-        #num_input.append(usr_input_num.user_input)
