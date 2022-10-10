@@ -218,6 +218,8 @@ map_data = data(colombia_airports, colombia_cities, colombia_flights)
 if st.checkbox('Show map'):
   map_data.create_map()
   map_data.map_created = 1
+else: 
+  map_data.map_created = 1
   
 input_columns = ['City origin', 'City destination']
 cat_input = []
