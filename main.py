@@ -106,6 +106,7 @@ class data():
         distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
       line_coded = self.nodes_dict.get(city_1),self.nodes_dict.get(city_2)
       self.lines_distance_coded.update({line_coded : distance})
+map_data = data(colombia_airports, colombia_cities, colombia_flights)
       
 class graph():
   def __init__(self, nodes, edges, distances):
@@ -222,4 +223,3 @@ if st.button('Find shortest distance'):
 with st.sidebar:
   for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
-   
