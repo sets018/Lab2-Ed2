@@ -26,7 +26,7 @@ class data():
   def join_data(self):
     self.colombia_cities_airports = pd.merge(colombia_cities, colombia_airports, how='inner', left_on = 'city', right_on = 'City served')
     self.cities_airports = self.colombia_cities_airports[["city","lat","lng","admin_name","id","Airport Name","ICAO","IATA","Category"]].copy()
-    self.city_list = self.map_data.cities_airports["city"]
+    self.city_list = self.cities_airports["city"].tolist()
     self.n_cities = self.cities_airports.shape[0]
     self.get_airports_codes()
   def get_airports_codes(self):
@@ -106,6 +106,7 @@ class data():
         distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
       line_coded = self.nodes_dict.get(city_1),self.nodes_dict.get(city_2)
       self.lines_distance_coded.update({line_coded : distance})
+      
 class graph():
   def __init__(self, nodes, edges, distances):
     self.nodes = nodes 
@@ -208,8 +209,17 @@ class user_input():
 st.title('Flight map')
 st.write('Placeholder') 
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
-map_data.create_map()
 
+if st.button('Show map'):
+  map_data.create_map()
+  
+input_columns = ['City origin', 'City destination']
+cat_input = []
+
+if st.button('Find shortest distance'):
+  city_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded)
+  city_graph.floyd()
 with st.sidebar:
-  city_input = user_input(city_origin, 'radio', sectors.sectors_values, 'list', cat_input)
-            sectors.get_hoods(borough_input.user_input)
+  for column in input_columns:
+    city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
+   
