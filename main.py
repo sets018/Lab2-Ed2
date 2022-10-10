@@ -13,7 +13,7 @@ colombia_airports = pd.read_csv(colombia_airports_url)
 colombia_cities_url = "https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_cities.csv"
 colombia_cities = pd.read_csv(colombia_cities_url)
 colombia_cities = colombia_cities[colombia_cities["country"] == "Colombia"]
-colombia_flights_url = 'https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_flights.csv'
+colombia_flights_url = 'https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_flights2.csv'
 colombia_flights = pd.read_csv(colombia_flights_url)
 colombia_flights = colombia_flights[(colombia_flights["Pais Origen"] == "COLOMBIA") & (colombia_flights["Pais Destino"] == "COLOMBIA")]
   
@@ -24,6 +24,7 @@ class data():
     self.colombia_flights = colombia_flights
     self.join_data()
     self.get_nodes_dict()
+    self.map_created = 0
   def join_data(self):
     self.colombia_cities_airports = pd.merge(colombia_cities, colombia_airports, how='inner', left_on = 'city', right_on = 'City served')
     self.cities_airports = self.colombia_cities_airports[["city","lat","lng","admin_name","id","Airport Name","ICAO","IATA","Category"]].copy()
@@ -71,12 +72,13 @@ class data():
     d = 2*r*asin(np.sqrt(a))
     return d
   def create_map(self): 
-    # Creates map object
-    map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
-    for city in range(0, self.n_cities):
-      folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
-      lines = folium.PolyLine(self.lines_points).add_to(map)
-    map_fig = st_folium(map, key="fig1", width=700, height=700)
+    if (self.map_created == 0):
+      # Creates map object
+      map = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+      for city in range(0, self.n_cities):
+        folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
+        lines = folium.PolyLine(self.lines_points).add_to(map)
+      map_fig = st_folium(map, key="fig1", width=700, height=700)';  
   def get_nodes_dict(self):
     self.vertices = []
     for i in range(0, len(self.airports_codes)):
@@ -215,6 +217,7 @@ map_data = data(colombia_airports, colombia_cities, colombia_flights)
 
 if st.checkbox('Show map'):
   map_data.create_map()
+  map_data.map_created = 1
   
 input_columns = ['City origin', 'City destination']
 cat_input = []
