@@ -23,6 +23,7 @@ class data():
     self.colombia_cities = colombia_cities
     self.colombia_flights = colombia_flights
     self.join_data()
+    self.get_nodes_dict()
   def join_data(self):
     self.colombia_cities_airports = pd.merge(colombia_cities, colombia_airports, how='inner', left_on = 'city', right_on = 'City served')
     self.cities_airports = self.colombia_cities_airports[["city","lat","lng","admin_name","id","Airport Name","ICAO","IATA","Category"]].copy()
@@ -106,6 +107,7 @@ class data():
         distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
       line_coded = self.nodes_dict.get(city_1),self.nodes_dict.get(city_2)
       self.lines_distance_coded.update({line_coded : distance})
+      
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
       
 class graph():
@@ -211,7 +213,7 @@ st.title('Flight map')
 st.write('Placeholder') 
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
 
-if st.button('Show map'):
+if st.checkbox('Show map'):
   map_data.create_map()
   
 input_columns = ['City origin', 'City destination']
