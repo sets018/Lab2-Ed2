@@ -251,29 +251,24 @@ class graph():
     # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
     usr_input_a = self.names_dict.get(a)
     usr_input_b = self.names_dict.get(b)
+    # Sie l usuario selecciona un punto de partida igual al de entrada entonces es un bucle 
+    if (usr_input_a == usr_input_b):
+     st.write("Como la ciudad de origen es la mismo que la ciudad desstino entonces no hay camino mas corto")
+     st.write(usr_input_a, ' -> ',usr_input_b)
     # Extrae los codigos de los aeropuerto del diccionario ( 0 - 32 )
-    usr_a = self.nodes_dict.get(usr_input_a)
-    usr_b = self.nodes_dict.get(usr_input_b)
-    usr_pair = (usr_a,usr_b)
-    st.write(self.nodes_dict)
-    st.write('a', usr_input_a,usr_input_b)
-    st.write('b', usr_a,usr_b)
-    # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
-    self.usr_path = self.paths_dict.get(usr_pair)
-    cities = []
-    for node in self.usr_path:
+    else:
+     usr_a = self.nodes_dict.get(usr_input_a)
+     usr_b = self.nodes_dict.get(usr_input_b)
+     usr_pair = (usr_a,usr_b)
+     # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
+     self.usr_path = self.paths_dict.get(usr_pair)
+     cities = []
+     st.write(self.usr_path)
+     for node in self.usr_path:
       city = self.nodes_dict.get(node)
       cities.append(city)
-    return cities
-    # Obtiene el camino minimo dados dos vertices especificos ( se pasan los nombres de las ciudades como parametro ) del diccionario con todos los caminos para todos los pares de vertices posibles 
-  def test(self,a,b):
-    # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
-    usr_input_a = self.names_dict.get(a)
-    usr_input_b = self.names_dict.get(b)
-    st.write(usr_input_a,usr_input_b)
-    if (usr_input_a == usr_input_b):
-     st.write("Bucle")
-     
+     return cities
+    
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
