@@ -112,67 +112,131 @@ class data():
       
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
       
+# Clase para representar el grafo en matrices de adyacencia y de distancia y realizar operaciones (algoritmo de floyd y prim)
+# Tambien cuenta con los metodos para extraer los resutados de estas operaciones 
 class graph():
-  def __init__(self, nodes, edges, distances):
+  # Recibe los vertices del grafo ( las 32 ciudades capitales con aeropuerto ) almacenados en una lista que son el atributo nodes de la clase grafo 
+  # Y las aristas de este ( las 152 rutas comerciales entre ciudades capitales con aeropuerto ) almacenados en una lista de tuplas que son el atributo edges de la clase grafo 
+  # Asi como las distancias entre las ciudades conectadas por rutas comerciales almacenados en un diccionario que son el atributo distances de la clase data 
+  def __init__(self, nodes, edges, distances, nodes_dict):
     self.nodes = nodes 
     self.edges = edges 
     self.distances = distances
-  def create_path_matrix(self):
-    self.path_matrix = [self.nodes]
-    for node in self.nodes:
-      np.append(self.path_matrix, [self.nodes], axis=0)
-  def create_matrix(self):
-    matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
-    for y in range(len(self.nodes)):
-      row = []
-      for x in range(len(self.nodes)):
-        row.append(0)
-    matrix.append(row)
-    return matrix
-  def create_ady_matrix(self):
-    self.ady_matrix = self.create_matrix()
-    for edge in self.edges:
-      x = edge[0]
-      y = edge[1]
-      self.ady_matrix[x - 1][y - 1] = 1
-  def create_dist_matrix(self):
-    self.dist_matrix = self.create_matrix()
-    for i in range(len(self.nodes)):
-      for j in range(len(self.nodes)):
-        x = self.nodes[i]
-        y = self.nodes[j]
-        pos_edge = x,y
-        dist = self.distances.get(pos_edge)
-        if (x == y):
-          self.dist_matrix[x - 1][y - 1] = 0
-        else:
-          dist = self.distances.get(pos_edge)
-          if (dist != None):
-            self.dist_matrix[x - 1][y - 1] = dist
-          else:
-            self.dist_matrix[x - 1][y - 1] = np.inf
-  def create_path_matrix(self):
-    self.path_matrix = self.create_matrix()
-    for x in range(len(self.nodes)):
-      for y in range(len(self.nodes)):
-        self.path_matrix[x][y] = str(x)
-  def floyd(self):
-    self.create_path_matrix()
     self.create_ady_matrix()
     self.create_dist_matrix()
-    for k in range(len(self.nodes)):
-      for i in range(len(self.nodes)):
-        for j in range(len(self.nodes)):
-          self.dist_matrix[i][j] = min(self.dist_matrix[i][j], self.dist_matrix[i][k] + self.dist_matrix[k][j])
-          self.path_matrix[i][j] = self.path_matrix[i][j] + ',' + str(k)
-  def print_results(self):
-   for x in range(len(self.nodes)):
-    for y in range(len(self.nodes)):
-      if(self.dist_matrix[x][y] == np.inf):
-        print("INF", end=" ")
-      else:
-        print(self.dist_matrix[x][y] , end="  ")
-        print(" ")
+    self.create_path_matrix()
+    self.inv_nodes_dict = nodes_dict
+  # Crea una matriz de 32*32 (numero de vertices x numero de vertices) llena con ceros
+  def create_matrix(self):
+    matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
+    return matrix
+  # Crea la matriz de adyacencia
+  def create_ady_matrix(self):
+    # Crea e inicializa la matriz de adyacencia como una matriz llena de ceros 
+    self.ady_matrix = self.create_matrix().copy()
+    # Itera por todas las aristas 
+    for edge in self.edges:
+      # Extrae los vertices que hacen parte de cada arista (x,y) 
+      x = edge[0]
+      y = edge[1]
+      # La matriz en la fila x, columna y toma un valor 1 para representar que hay adyacencia entre x y y, es decir que existe una arista que va de x a y
+      self.ady_matrix[x][y] = 1
+      # En las combinaciones de fila y columnas donde no hay adyacencia la matriz queda con el valor 0 que tenia inicialmente
+  # Crea la matriz de distancia
+  def create_dist_matrix(self):
+    # Crea e inicializa la matriz de distancia como una matriz llena de ceros 
+    self.dist_matrix = self.create_matrix().copy()
+    # Itera por todas las posibles aristas
+    for x in range(len(self.nodes)):
+      for y in range(len(self.nodes)):
+        # Almacena los vertices que forman una posible arista en una tupla
+        pos_edge = (x,y)
+        # Si hay una arista bucle su valor es automaticamente 0 ya que la distancia de un  vertice a si mismo es 0
+        if (x == y):
+          self.dist_matrix[x][y] = 0
+        else:
+          # Si hay una arista que conecta 2 vertices diferentes se extrae su distancia del diccionario que almacena todas las distancia entre vertices adyacentes 
+          # Usando la tupla que almacena los vertices de la arista como key
+          dist = self.distances.get(pos_edge)
+          # Si la distancia es difernente de None ( la distancia es None cuando la key no existe en el diccionario por lo tanto no hay adyacencia entre los vertices )
+          if (dist != None):
+              # Entonces la fila y columna relacionadas a los vertices toma el valor de la distancia entre estos obtenida en el diccionario
+              self.dist_matrix[x][y] = dist
+          # Si la distancia es None 
+          else:
+              # Entonces la fila y columna relacionadas a los vertices toma el valor de infinito ya que no hay adyacencia entre estos ( No hay arista que una a estos vertices, la distancia entre estos es inifinito)
+              self.dist_matrix[x][y] = float('inf')
+  # Crea la matriz de recorrido
+  def create_path_matrix(self):
+    # Crea e inicializa la matriz de distancia como una matriz llena de ceros 
+    self.path_matrix = self.create_matrix().copy()
+    # Itera por todas las posibles aristas
+    for x in range(len(self.nodes)):
+      for y in range(len(self.nodes)):
+        # Si hay una arista bucle entonces el camino a este se determina como 0
+        if (x == y):
+          self.path_matrix[x][y] = 0
+        # Si hay adyacencia entre este par de vertices entonces se inicializa el camino empezando en x
+        elif (self.dist_matrix[x][y] != float('inf')):
+          self.path_matrix[x][y] = x
+        else:
+        # Si no hay adyacencia entre este par de vertices entonces el camino a este se determina como -1
+          self.path_matrix[x][y] = -1
+  # Ejecuta el algoritmo de floyd 
+  def floyd(self, dist_matrix, path_matrix):
+    # Se ejecuta el algoritmo de floyd con las matrices de distancia y recorrido
+      costs = dist_matrix.copy()
+      for k in range(len(self.nodes)):
+        for i in range(len(self.nodes)):
+          for j in range(len(self.nodes)):
+            # Si encuentra un camino minimo actualiza la matriz de caminos y distancia
+            if ((costs[i][k] != float('inf')) and (costs[k][j] != float('inf')) and (costs[i][k] + costs[k][j] < costs[i][j])):
+                    costs[i][j] = costs[i][k] + costs[k][j]
+                    path_matrix[i][j] = path_matrix[k][j]
+      # Funcion para extraer el camino de menor costo que va de cualquier vertice a hacia cualquier vertice b 
+      self.get_paths(path_matrix)
+  # Funcion para encontrar los caminos de menor costo de cualquier vertice a cualquier otro
+  def get_paths(self,path_matrix):
+    # Diccionario que almacena los caminos minimos posibles entre todos los vertices
+    self.paths_dict = {}
+    # Itera por todas las posibles aristas ( pares de vertices en el grafo )
+    for a in range(len(self.nodes)):
+      for b in range(len(self.nodes)):
+        # Si los pares de vertices no forman una arista bucle y tienen adyacencia en el grafo entonces se forma la ruta empezando por i 
+        if (a != b) and (path_matrix[a][b] != -1):
+          # Se inicializa el camino empezando por el punto inicial
+          route = [a]
+          # Se llama la funcion recursiva que construe el recorrido basado en la matriz de recorrido ya creada
+          self.fill_route(path_matrix, a, b, route)
+          # Finalmente cuando ya esta construido el camino se termina agregando el punto final
+          route.append(b)
+          #print(f'The shortest path from {a} —> {b} is', route)
+          # Agrega la ruta de costo minimo con el par de vertices en el diccionario junto a su distancia 
+          orig = a
+          dest = b
+          pair = (orig,dest)
+          self.paths_dict.update({pair: route})
+  # Funcion para obtener la ruta de menor costo que va de cada vertica a a cada vertice b en base a los resultados de aplicar el algoritmo de floyd
+  def fill_route(self,path_matrix, a, b, route):
+      # Criterio para parar la recursion
+      if (path_matrix[a][b] == a):
+          return
+      # Llama a la funcion recursivamente con un cambio de paramteros
+      self.fill_route(path_matrix, a, path_matrix[a][b], route)
+      route.append(path_matrix[a][b])
+  # Obtiene el camino minimo dados dos vertices especificos del diccionario con todos los caminos para todos los pares de vertices posibles 
+  def extract_usr_path(self,a,b):
+    self.a = a
+    self.b = b
+    usr_pair = (a,b)
+    # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
+    self.usr_path = self.paths_dict.get(usr_pair)
+    cities = []
+    for node in self.usr_path:
+      city = self.inv_nodes_dict.get(node)
+      cities.append(city)
+    return cities
+
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
