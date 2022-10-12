@@ -262,7 +262,7 @@ class graph():
     self.usr_path = self.paths_dict.get(usr_pair)
     cities = []
     for node in self.usr_path:
-      city = self.inv_nodes_dict.get(node)
+      city = self.nodes_dict.get(node)
       cities.append(city)
     return cities
     # Obtiene el camino minimo dados dos vertices especificos ( se pasan los nombres de las ciudades como parametro ) del diccionario con todos los caminos para todos los pares de vertices posibles 
@@ -273,6 +273,7 @@ class graph():
     st.write(usr_input_a,usr_input_b)
     if (usr_input_a == usr_input_b):
      st.write("Bucle")
+     
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
