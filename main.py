@@ -264,6 +264,8 @@ class graph():
      self.usr_path = self.paths_dict.get(usr_pair)
      cities = []
      st.write(self.usr_path)
+     st.write(self.paths_dict)
+     st.write(self.usr_pair)
      for node in self.usr_path:
       city = self.nodes_dict.get(node)
       cities.append(city)
@@ -333,9 +335,10 @@ with st.sidebar:
     usr_input_b = cat_input[1]
     #cities = cities_graph.test(usr_input_a,usr_input_b)
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
-    for city in cities:
-     st.write(cat_input[0],cat_input[1])
-     st.write(city, ' -> ')
+    if (cities != None):
+     for city in cities:
+      st.write(cat_input[0],cat_input[1])
+      st.write(city, ' -> ')
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
