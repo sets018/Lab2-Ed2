@@ -315,7 +315,7 @@ with st.sidebar:
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
-    st.write(usr_input_a,usr_input_b)
+    st.write(type(usr_input_a),type(usr_input_b))
    # cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
    # for city in cities:
     # st.write(cat_input[0],cat_input[1])
