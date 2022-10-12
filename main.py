@@ -241,6 +241,7 @@ class graph():
     # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
     usr_input_a = self.cities_airports[self.cities_airports["city"] == a]["IATA"][0]
     usr_input_b = self.cities_airports[self.cities_airports["city"] == b]["IATA"][0]
+    st.write(usr_input_a,usr_input_b)
     # Extrae los codigos de los aeropuerto del diccionario ( 0 - 32 )
     usr_a = self.inv_nodes_dict.get(usr_input_a)
     usr_b = self.inv_nodes_dict.get(usr_input_b)
