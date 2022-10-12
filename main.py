@@ -269,13 +269,15 @@ class graph():
       city = self.inv_nodes_dict.get(node)
       cities.append(city)
      return cities
-    
+
+# Configua=racion de la aplicacion web
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
     initial_sidebar_state="auto",
 )
 
+# Clase para implementar objetos en la palicacion web que reciban los datos necesarios para resolver el problema que ingrese el usuario
 class user_input():
     def __init__(self, var, type, data, type_data, input_list):
         self.var = var
@@ -337,7 +339,6 @@ with st.sidebar:
     
     if (cities != None):
      i = 1
-     st.write(cities_graph.names_dict)
      for city in cities:
       if (i == 1):
        st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
