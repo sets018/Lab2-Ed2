@@ -255,7 +255,7 @@ class graph():
     usr_a = self.nodes_dict.get(usr_input_a)
     usr_b = self.nodes_dict.get(usr_input_b)
     usr_pair = (usr_a,usr_b)
-    st.write(self.inv_nodes_dict)
+    st.write(self.nodes_dict)
     st.write('a', usr_input_a,usr_input_b)
     st.write('b', usr_a,usr_b)
     # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
