@@ -149,6 +149,7 @@ class graph():
     self.nodes_dict = nodes_dict
     self.inv_nodes_dict = {i: j for j, i in self.nodes_dict.items()}
     self.names_dict = names_dict
+    self.inv_names_dict = {i: j for j, i in self.names_dict.items()}
   # Crea una matriz de 32*32 (numero de vertices x numero de vertices) llena con ceros
   def create_matrix(self):
     matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
@@ -333,12 +334,15 @@ with st.sidebar:
     usr_input_b = cat_input[1]
     #cities = cities_graph.test(usr_input_a,usr_input_b)
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
+    
     if (cities != None):
      i = 1
      st.write(cities_graph.names_dict)
      for city in cities:
-      st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
-      st.write(i, '- ', city)
+      if (i == 1):
+       st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
+      city_name = cities_graph.inv_names_dict.get(city)
+      st.write(i, '- ', city_name)
       i = i + 1
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
