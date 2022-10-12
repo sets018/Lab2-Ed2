@@ -63,14 +63,20 @@ class data():
         city_1,city_2 = cities[i],cities[i+1]
         lat_1,lng_1 = float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lng"])
         lat_2,lng_2 = float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lng"])
-        distance = self.distance(lat_1, lng_1, lat_2, lng_2)
+        distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
       self.lines_distance.update({line: distance})
   # Funcion que obtiene la distancia entre 2 puntos dadas sus coordenadas ( latitud y longitud ) y devuelve deste dato como un float
-  def distance(self,lat1, lon1, lat2, lon2):
-    coords_1 = (lat1,lon1)
-    coords_2 = (lat2,lon2)
-    distance =  geopy.distance.geodesic(coords_1, coords_2).km
-    return distance
+  def distance(self,lat1, lon1, lat2, lon2, r):
+    coordinates = lat1, lon1, lat2, lon2
+    #radians(c) is same as c*pi/180
+    phi1, lambda1, phi2, lambda2 = [
+        radians(c) for c in coordinates
+    ] 
+    # Aplica la formula para encontrar distancia entre 2 puntos
+    a = (np.square(sin((phi2-phi1)/2)) + cos(phi1) * cos(phi2) * 
+        np.square(sin((lambda2-lambda1)/2)))
+    d = 2*r*asin(np.sqrt(a))
+    return d
   # Funcion que crea el mapa en basse a las lineas y las ciudades capitales de colombia que cuentan con aeropuertos
   def create_map(self): 
     if (self.map_created == 0):
