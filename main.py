@@ -97,6 +97,7 @@ class data():
        self.nodes_dict.update({city: i})
        i = i + 1
     self.get_edges()
+    self.inv_nodes_dict = {i: j for j, i in self.nodes_dict.items()}
   # Funcion que genera una lista con todas las rutas comerciales que conectan 2 ciudades capitales con aeropuerto
   def get_edges(self):
     self.edges = []
@@ -310,6 +311,6 @@ with st.sidebar:
     for city in cities_graph.extract_usr_path(cat_input[0],cat_input[1]):
      st.write(city, ' -> ')
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
-    city_input = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
+    city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
       st.write('aaaaaaaaaaaaaaaaaaa')
