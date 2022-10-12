@@ -139,14 +139,14 @@ class graph():
   # Recibe los vertices del grafo ( las 32 ciudades capitales con aeropuerto ) almacenados en una lista que son el atributo nodes de la clase grafo 
   # Y las aristas de este ( las 152 rutas comerciales entre ciudades capitales con aeropuerto ) almacenados en una lista de tuplas que son el atributo edges de la clase grafo 
   # Asi como las distancias entre las ciudades conectadas por rutas comerciales almacenados en un diccionario que son el atributo distances de la clase data 
-  def __init__(self, nodes, edges, distances, nodes_dict, names_dict):
+  def __init__(self, nodes, edges, distances, inv_nodes_dict, names_dict):
     self.nodes = nodes 
     self.edges = edges 
     self.distances = distances
     self.create_ady_matrix()
     self.create_dist_matrix()
     self.create_path_matrix()
-    self.nodes_dict = nodes_dict
+    self.nodes_dict = inv_nodes_dict
     self.names_dict = names_dict
   # Crea una matriz de 32*32 (numero de vertices x numero de vertices) llena con ceros
   def create_matrix(self):
@@ -329,7 +329,7 @@ with st.sidebar:
    for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
    if st.button('Find shortest path from (A) to (B)'):
-    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
+    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict,map_data.names_dict)
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
