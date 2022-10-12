@@ -267,7 +267,7 @@ class graph():
      for node in self.usr_path:
       city = self.nodes_dict.get(node)
       st.write(node)
-      st.write(city)
+      st.write(self.nodes_dict)
       cities.append(city)
      return cities
     
