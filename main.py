@@ -40,6 +40,10 @@ class data():
      self.codes = self.cities_airports.IATA.unique()
      for code in self.codes:
       self.airports_codes.append(code)
+     self.cities_name = []
+     self.names = self.cities_airports.city.unique()
+     for name in self.names:
+      self.cities_name.append(name)
      self.get_flights()
   # Funcion que en base a los datos obtiene las lineas de vuelo comerciales en colombia y las ciudades a las que conecta asi como sus coordenadas
   def get_flights(self):
@@ -96,6 +100,12 @@ class data():
     for city in self.airports_codes:
        self.nodes_dict.update({city: i})
        i = i + 1
+    self.names_dict = {}
+    i = 0
+    for code in self.airports_codes:
+     city = self.names[i]
+     self.names_dict.update({city: code})
+     i = i + 1
     self.get_edges()
     self.inv_nodes_dict = {i: j for j, i in self.nodes_dict.items()}
   # Funcion que genera una lista con todas las rutas comerciales que conectan 2 ciudades capitales con aeropuerto
@@ -129,7 +139,7 @@ class graph():
   # Recibe los vertices del grafo ( las 32 ciudades capitales con aeropuerto ) almacenados en una lista que son el atributo nodes de la clase grafo 
   # Y las aristas de este ( las 152 rutas comerciales entre ciudades capitales con aeropuerto ) almacenados en una lista de tuplas que son el atributo edges de la clase grafo 
   # Asi como las distancias entre las ciudades conectadas por rutas comerciales almacenados en un diccionario que son el atributo distances de la clase data 
-  def __init__(self, nodes, edges, distances, nodes_dict, cities_airports):
+  def __init__(self, nodes, edges, distances, nodes_dict, names_dict):
     self.nodes = nodes 
     self.edges = edges 
     self.distances = distances
@@ -137,7 +147,7 @@ class graph():
     self.create_dist_matrix()
     self.create_path_matrix()
     self.inv_nodes_dict = nodes_dict
-    self.cities_airports = cities_airports
+    self.names_dict = names_dict
   # Crea una matriz de 32*32 (numero de vertices x numero de vertices) llena con ceros
   def create_matrix(self):
     matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
@@ -256,8 +266,8 @@ class graph():
     # Obtiene el camino minimo dados dos vertices especificos ( se pasan los nombres de las ciudades como parametro ) del diccionario con todos los caminos para todos los pares de vertices posibles 
   def test(self,a,b):
     # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
-    usr_input_a = self.cities_airports[self.cities_airports["city"] == a]["IATA"][0]
-    usr_input_b = self.cities_airports[self.cities_airports["city"] == b]["IATA"][0]
+    usr_input_a = self.names_dict.get(a)
+    usr_input_b = self.names_dict.get(b)
     st.write(usr_input_a,usr_input_b)
 st.set_page_config(
     page_title="Lab 02-Ed2",
@@ -317,7 +327,7 @@ with st.sidebar:
    for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
    if st.button('Find shortest path from (A) to (B)'):
-    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict,map_data.cities_airports)
+    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict,map_data.names_dict)
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
