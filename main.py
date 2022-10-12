@@ -285,12 +285,19 @@ if st.checkbox('Show map'):
 else: 
   map_data.map_created = 1
   
-input_columns = ['City origin', 'City destination']
-cat_input = []
+input_columns = ['City origin (A)', 'City destination (B)']
 
-if st.button('Find shortest distance'):
-  city_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded)
-  city_graph.floyd()
+cat_input = []
+cat_input2 = []
+  
 with st.sidebar:
-  for column in input_columns:
-    city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
+  if st.checkbox('Find the shortest path beetwen two cities'):
+    city_input = user_input('City origin', 'radio', map_data.city_list, 'list', cat_input)
+    if st.button('Find shortest path'):
+      cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict)
+      cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
+      for city in cities_graph.extract_usr_path(cat_input[0],cat_input[1])
+        st.write(city, ' -> ')
+  if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
+    for column in input_columns:
+      city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
