@@ -129,7 +129,7 @@ class graph():
   # Recibe los vertices del grafo ( las 32 ciudades capitales con aeropuerto ) almacenados en una lista que son el atributo nodes de la clase grafo 
   # Y las aristas de este ( las 152 rutas comerciales entre ciudades capitales con aeropuerto ) almacenados en una lista de tuplas que son el atributo edges de la clase grafo 
   # Asi como las distancias entre las ciudades conectadas por rutas comerciales almacenados en un diccionario que son el atributo distances de la clase data 
-  def __init__(self, nodes, edges, distances, nodes_dict):
+  def __init__(self, nodes, edges, distances, nodes_dict, cities_airports):
     self.nodes = nodes 
     self.edges = edges 
     self.distances = distances
@@ -137,6 +137,7 @@ class graph():
     self.create_dist_matrix()
     self.create_path_matrix()
     self.inv_nodes_dict = nodes_dict
+    self.cities_airports = cities_airports
   # Crea una matriz de 32*32 (numero de vertices x numero de vertices) llena con ceros
   def create_matrix(self):
     matrix = [[0 for i in range(len(self.nodes))] for j in range(len(self.nodes))] 
@@ -235,11 +236,15 @@ class graph():
       # Llama a la funcion recursivamente con un cambio de paramteros
       self.fill_route(path_matrix, a, path_matrix[a][b], route)
       route.append(path_matrix[a][b])
-  # Obtiene el camino minimo dados dos vertices especificos del diccionario con todos los caminos para todos los pares de vertices posibles 
+  # Obtiene el camino minimo dados dos vertices especificos ( se pasan los nombres de las ciudades como parametro ) del diccionario con todos los caminos para todos los pares de vertices posibles 
   def extract_usr_path(self,a,b):
-    self.a = a
-    self.b = b
-    usr_pair = (a,b)
+    # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
+    usr_input_a = self.cities_airports[self.cities_airports["IATA"] == a]["IATA"]
+    usr_input_b = self.cities_airports[self.cities_airports["IATA"] == b]["IATA"]
+    # Extrae los codigos de los aeropuerto del diccionario ( 0 - 32 )
+    usr_a = self.inv_nodes_dict.get(usr_input_a)
+    usr_b = self.inv_nodes_dict.get(usr_input_b)
+    usr_pair = (usr_a,usr_b)
     # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
     self.usr_path = self.paths_dict.get(usr_pair)
     cities = []
@@ -306,9 +311,9 @@ with st.sidebar:
    for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
    if st.button('Find shortest path from (A) to (B)'):
-    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict)
+    cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.inv_nodes_dict,map_data.cities_airports)
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
-    for city in cities_graph.extract_usr_path(cat_input[0],cat_input[1]):
+    for city in cities_graph.extract_usr_path(usr_input_a,usr_input_b):
      st.write(cat_input[0],cat_input[1])
      st.write(city, ' -> ')
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
