@@ -312,3 +312,4 @@ with st.sidebar:
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
+      st.write('aaaaaaaaaaaaaaaaaaa')
