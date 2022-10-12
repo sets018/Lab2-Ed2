@@ -335,7 +335,7 @@ with st.sidebar:
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
     if (cities != None):
      i = 1
-     st.write(cities_graph,names_dict)
+     st.write(cities_graph.names_dict)
      for city in cities:
       st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
       st.write(i, '- ', city)
