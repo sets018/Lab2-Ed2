@@ -315,9 +315,11 @@ with st.sidebar:
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
-    for city in cities_graph.extract_usr_path(usr_input_a,usr_input_b):
-     st.write(cat_input[0],cat_input[1])
-     st.write(city, ' -> ')
+    st.write(usr_input_a,usr_input_b)
+   # cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
+   # for city in cities:
+    # st.write(cat_input[0],cat_input[1])
+     #st.write(city, ' -> ')
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
