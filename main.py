@@ -239,8 +239,8 @@ class graph():
   # Obtiene el camino minimo dados dos vertices especificos ( se pasan los nombres de las ciudades como parametro ) del diccionario con todos los caminos para todos los pares de vertices posibles 
   def extract_usr_path(self,a,b):
     # Extrae los codigos de los aeropuerto de las ciudades del datframe de aeropuertos y ciudades 
-    usr_input_a = map_data.cities_airports[map_data.cities_airports["city"] == a]["IATA"][0]
-    usr_input_b = map_data.cities_airports[map_data.cities_airports["city"] == b]["IATA"][0]
+    usr_input_a = self.cities_airports[self.cities_airports["city"] == a]["IATA"][0]
+    usr_input_b = self.cities_airports[self.cities_airports["city"] == b]["IATA"][0]
     # Extrae los codigos de los aeropuerto del diccionario ( 0 - 32 )
     usr_a = self.inv_nodes_dict.get(usr_input_a)
     usr_b = self.inv_nodes_dict.get(usr_input_b)
@@ -315,7 +315,6 @@ with st.sidebar:
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
-    st.write(type(usr_input_a),type(usr_input_b))
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
     for city in cities:
      st.write(cat_input[0],cat_input[1])
