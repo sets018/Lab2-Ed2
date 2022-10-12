@@ -4,6 +4,6 @@ numpy>=1.22
 folium>=0.11
 streamlit-folium>=0.6.9
 requests
-geopy
+geopy==2.2.0
 osmnx 
 networkx
