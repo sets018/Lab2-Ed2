@@ -16,27 +16,32 @@ colombia_cities = colombia_cities[colombia_cities["country"] == "Colombia"]
 colombia_flights_url = 'https://raw.githubusercontent.com/sets018/Lab2-Ed2/main/data/colombia_flights2.csv'
 colombia_flights = pd.read_csv(colombia_flights_url)
 colombia_flights = colombia_flights[(colombia_flights["Pais Origen"] == "COLOMBIA") & (colombia_flights["Pais Destino"] == "COLOMBIA")]
-  
+ 
+# Clase que almacena los datos de los vuelos en colombia y los metodos para extraer/procesar los datos
 class data():
   def __init__(self, colombia_airports, colombia_cities, colombia_flights):
+    # La clase recibe como atributo los dataframes que obtienen los datos extraidos de la pagina de la aerocivil
     self.colombia_airports = colombia_airports
     self.colombia_cities = colombia_cities
     self.colombia_flights = colombia_flights
     self.join_data()
     self.get_nodes_dict()
     self.map_created = 0
+  # Funcion que une los datos de las ciudades y los aeropuertos 
   def join_data(self):
     self.colombia_cities_airports = pd.merge(colombia_cities, colombia_airports, how='inner', left_on = 'city', right_on = 'City served')
     self.cities_airports = self.colombia_cities_airports[["city","lat","lng","admin_name","id","Airport Name","ICAO","IATA","Category"]].copy()
     self.city_list = self.cities_airports["city"].tolist()
     self.n_cities = self.cities_airports.shape[0]
     self.get_airports_codes()
+  # Funcion que extrae los codigos de los aeropuertos y los almacena en una lista
   def get_airports_codes(self):
      self.airports_codes = []
      self.codes = self.cities_airports.IATA.unique()
      for code in self.codes:
       self.airports_codes.append(code)
      self.get_flights()
+  # Funcion que en base a los datos obtiene las lineas de vuelo comerciales en colombia y las ciudades a las que conecta asi como sus coordenadas
   def get_flights(self):
     self.colombia_flights = self.colombia_flights[(self.colombia_flights["Origen"].isin(self.airports_codes)) & (self.colombia_flights["Destino"].isin(self.airports_codes))]
     self.colombia_flights_real = self.colombia_flights[self.colombia_flights["Tipo Vuelo"] == 'R']
@@ -49,6 +54,7 @@ class data():
         city_coords = (float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_code]["lng"]))
         self.lines_points.append(city_coords)
     self.get_distances(self.cities_airports, self.lines)
+  # Funcion que calcula las distancias entre las ciudades que estan conectadas lineas de vuelo directas y las almacena en un diccionario donde el key es la ruta
   def get_distances(self,cities_airports,lines):
     self.lines_distance = {}
     for line in lines:
@@ -57,20 +63,15 @@ class data():
         city_1,city_2 = cities[i],cities[i+1]
         lat_1,lng_1 = float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_1]["lng"])
         lat_2,lng_2 = float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lat"]),float(self.cities_airports[self.cities_airports["IATA"] == city_2]["lng"])
-        distance = self.distance(lat_1, lng_1, lat_2, lng_2, 6371)
+        distance = self.distance(lat_1, lng_1, lat_2, lng_2)
       self.lines_distance.update({line: distance})
-  def distance(self,lat1, lon1, lat2, lon2, r):
-    #Convert degrees to radians
-    coordinates = lat1, lon1, lat2, lon2
-    #radians(c) is same as c*pi/180
-    phi1, lambda1, phi2, lambda2 = [
-        radians(c) for c in coordinates
-    ] 
-    # Apply the haversine formula
-    a = (np.square(sin((phi2-phi1)/2)) + cos(phi1) * cos(phi2) * 
-        np.square(sin((lambda2-lambda1)/2)))
-    d = 2*r*asin(np.sqrt(a))
-    return d
+  # Funcion que obtiene la distancia entre 2 puntos dadas sus coordenadas ( latitud y longitud ) y devuelve deste dato como un float
+  def distance(self,lat1, lon1, lat2, lon2):
+    coords_1 = (lat1,lon1)
+    coords_2 = (lat2,lon2)
+    distance =  geopy.distance.geodesic(coords_1, coords_2).km
+    return distance
+  # Funcion que crea el mapa en basse a las lineas y las ciudades capitales de colombia que cuentan con aeropuertos
   def create_map(self): 
     if (self.map_created == 0):
       # Creates map object
@@ -79,6 +80,7 @@ class data():
         folium.Marker(location=[self.cities_airports.iloc[city]['lat'],self. cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + self.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + self.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + self.cities_airports.iloc[city]['IATA']).add_to(map)
         lines = folium.PolyLine(self.lines_points).add_to(map)
       map_fig = st_folium(map, key="fig1", width=700, height=700)
+  # Funcion que genera un diccionario en el que cada ciudad tiene asignada un valor numerico del 0 al 31
   def get_nodes_dict(self):
     self.vertices = []
     for i in range(0, len(self.airports_codes)):
@@ -89,6 +91,7 @@ class data():
        self.nodes_dict.update({city: i})
        i = i + 1
     self.get_edges()
+  # Funcion que genera una lista con todas las rutas comerciales que conectan 2 ciudades capitales con aeropuerto
   def get_edges(self):
     self.edges = []
     for line in self.lines:
@@ -98,6 +101,7 @@ class data():
         temp = (self.nodes_dict.get(city_1),self.nodes_dict.get(city_2))
       self.edges.append(temp)
     self.get_distances_coded(self.cities_airports, self.lines)
+  # Funcion que calcula las distancias entre las ciudades que estan conectadas lineas de vuelo directas y las almacena en un diccionario donde el key es la ruta con las ciudades en valores numericos
   def get_distances_coded(self,cities_airports,lines):
     self.lines_distance_coded = {}
     for line in lines:
