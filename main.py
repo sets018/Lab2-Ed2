@@ -253,7 +253,7 @@ class graph():
     usr_input_b = self.names_dict.get(b)
     # Sie l usuario selecciona un punto de partida igual al de entrada entonces es un bucle 
     if (usr_input_a == usr_input_b):
-     st.write("Como la ciudad de origen es la mismo que la ciudad desstino entonces no hay camino mas corto")
+     st.write("Como la ciudad de origen es al misma que la ciudad desstino entonces no hay camino mas corto")
      st.write(usr_input_a, ' -> ',usr_input_b)
     # Extrae los codigos de los aeropuerto del diccionario ( 0 - 32 )
     else:
@@ -264,8 +264,8 @@ class graph():
      self.usr_path = self.paths_dict.get(usr_pair)
      cities = []
      st.write(self.usr_path)
-     st.write(self.paths_dict)
-     st.write(self.usr_pair)
+     st.write(list(self.paths_dict.keys())[0],list(self.paths_dict.keys())[18],list(self.paths_dict.keys())[5],list(self.paths_dict.keys())[4],list(self.paths_dict.keys())[1])
+     st.write(usr_pair)
      for node in self.usr_path:
       city = self.nodes_dict.get(node)
       cities.append(city)
