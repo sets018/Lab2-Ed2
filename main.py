@@ -264,12 +264,8 @@ class graph():
      # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
      self.usr_path = self.paths_dict.get(usr_pair)
      cities = []
-     st.write(self.usr_path)
      for node in self.usr_path:
       city = self.inv_nodes_dict.get(node)
-      st.write(node)
-      st.write(self.inv_nodes_dict)
-      st.write(city)
       cities.append(city)
      return cities
     
@@ -338,9 +334,12 @@ with st.sidebar:
     #cities = cities_graph.test(usr_input_a,usr_input_b)
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
     if (cities != None):
+     i = 1
+     st.write(cities_graph,names_dict)
      for city in cities:
-      st.write(cat_input[0],cat_input[1])
-      st.write(city, ' -> ')
+      st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
+      st.write(i, '- ', city)
+      i = i + 1
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
