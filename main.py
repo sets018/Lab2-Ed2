@@ -263,9 +263,7 @@ class graph():
      # Basado en el punto de origen y de destinacion que da el usuario encuentra la ruta de camino minimo en el diccionario
      self.usr_path = self.paths_dict.get(usr_pair)
      cities = []
-     st.write(self.usr_path)
-     st.write(list(self.paths_dict.keys())[0],list(self.paths_dict.keys())[18],list(self.paths_dict.keys())[5],list(self.paths_dict.keys())[4],list(self.paths_dict.keys())[1])
-     st.write(usr_pair)
+     st.write(usr_path)
      for node in self.usr_path:
       city = self.nodes_dict.get(node)
       cities.append(city)
