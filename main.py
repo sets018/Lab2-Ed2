@@ -269,6 +269,8 @@ class graph():
     usr_input_a = self.names_dict.get(a)
     usr_input_b = self.names_dict.get(b)
     st.write(usr_input_a,usr_input_b)
+    if (usr_input_a == usr_input_b):
+     st.write("Bucle")
 st.set_page_config(
     page_title="Lab 02-Ed2",
     layout="centered",
@@ -333,9 +335,9 @@ with st.sidebar:
     usr_input_b = cat_input[1]
     cities_graph.test(usr_input_a,usr_input_b)
     #cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
-    for city in cities:
-     st.write(cat_input[0],cat_input[1])
-     st.write(city, ' -> ')
+    #for city in cities:
+     #st.write(cat_input[0],cat_input[1])
+     #st.write(city, ' -> ')
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
