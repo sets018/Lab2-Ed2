@@ -397,7 +397,7 @@ with st.sidebar:
     if st.button('Find shortest path from (A) to traverse all cities'):
      cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
      cities_graph2.floyd(cities_graph2.dist_matrix,cities_graph2.path_matrix)
-     path_cities = cities_graph2.print_path(cat_input[0])
+     path_cities = cities_graph2.print_path(cat_input2[0])
      if (path_cities != None):
       i = 1
       for city in path_cities:
