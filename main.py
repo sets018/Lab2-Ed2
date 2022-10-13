@@ -219,6 +219,54 @@ class graph():
                     path_matrix[i][j] = path_matrix[k][j]
       # Funcion para extraer el camino de menor costo que va de cualquier vertice a hacia cualquier vertice b 
       self.get_paths(path_matrix)
+      self.dist_matrix = costs.copy()
+   # Funcion para encontrar los caminos de menor costo de cualquier vertice pasando por todos los demas usando el algoritmo de prim
+  def find_shortest_path(self,a):
+    # Lista que almacena las aristas utilizadas para construir el camino de menor costo
+    edges_used = []
+    dist_matrix = self.dist_matrix
+    # Lista que almacena un lugar para cada vertice, alacena si un vertice ya se recorrio o no ( 0 no se han recorrido ) y 1 ( ya se recorrieron )
+    traversed = [0] * 32
+    # Se recorre primero el vertice inicial para iniciar el algoritmo
+    traversed[a] = 1
+    # Se tiene que el numero de aristas que forman el camino de menor costo va a ser siempre menor a v-1, siendo v el nuero de vertices en el grafo
+    while (len(edges_used) < len(self.nodes) - 1):
+        min = float('inf')
+        x = 0
+        y = 0
+        # Para todos los vertices se encuentran todos los pares de vertices adyacentes y se calcula su distancia al vertice seleccionado, se selecciona la menor
+        for i in range(len(self.nodes)):
+            if (traversed[i] == 1):
+                for j in range(len(self.nodes)):
+                    if (not (traversed[j] == 1) and dist_matrix[i][j]):  
+                        # Si hay un vertice no recorrido con una arista que lo conecte
+                        if (min > dist_matrix[i][j]):
+                            min = dist_matrix[i][j]
+                            a = i
+                            b = j
+        # La arista utilizada para recorrer el camino se agrega a la lista de aristas
+        edge = (a,b)
+        traversed[b] = 1
+        edges_used.append(edge)
+    return edges_used
+  # Funcion para imprimir el camino que pasa por todos los vertices obtenido por la otra funcion usando el algoritmo de prim
+  def print_path(self,origin):
+    usr_input_origin = self.names_dict.get(origin)
+    usr_origin = self.nodes_dict.get(usr_input_origin)
+    path = self.find_shortest_path(usr_origin)
+    path_cities = []
+    for edge in path:
+      cities = (self.inv_nodes_dict.get(edge[0]),self.inv_nodes_dict.get(edge[1]))
+      path_cities.append(cities)
+    return path_cities
+  def find_adys(self,a):
+    # encuentra todos los vertices adyacentes al vertice inicial a
+    adys = [edge for edge in self.edges
+              if edge[0] == a]
+    ady_nodes = []
+    for edge in adys:
+      ady_nodes.append(edge[1])
+    return ady_nodes
   # Funcion para encontrar los caminos de menor costo de cualquier vertice a cualquier otro
   def get_paths(self,path_matrix):
     # Diccionario que almacena los caminos minimos posibles entre todos los vertices
@@ -347,4 +395,16 @@ with st.sidebar:
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
-      st.write('aaaaaaaaaaaaaaaaaaa')
+    cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
+    cities_graph2.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
+    path_cities = cities_graph2.print_path(cat_input[0])
+    if (path_cities != None):
+     i = 1
+     for city in path_cities:
+      if (i == 1):
+       st.write('the shortest path beetwen ', cat_input[0],' and all capital cities with airports is')
+      city_name = cities_graph.inv_names_dict.get(city[0])
+      st.write(i, '- ', city_name)
+      city_name2 = cities_graph.inv_names_dict.get(city[1])
+      st.write(i + 1, '- ', city_name2)
+      i = i + 2
