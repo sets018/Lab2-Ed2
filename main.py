@@ -374,10 +374,10 @@ cat_input = []
 cat_input2 = []
   
 with st.sidebar:
-  floyd = st.checkbox('Find the shortest path beetwen two cities', key = 'floyd')
+  floyd = st.checkbox('Find the shortest path beetwen two cities')
   if (floyd):
    for column in input_columns:
-    city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
+    city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input, key = 'input_1')
    if st.button('Find shortest path from (A) to (B)'):
     cities_graph = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
@@ -393,9 +393,9 @@ with st.sidebar:
       city_name = cities_graph.inv_names_dict.get(city)
       st.write(i, '- ', city_name)
       i = i + 1
-  prim = st.checkbox('Find the shortest path to traverse all cities from an origin point', key = 'prim')
+  prim = st.checkbox('Find the shortest path to traverse all cities from an origin point')
   if prim:
-    city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
+    city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2, key = 'input_2')
     if st.button('Find shortest path from (A) to traverse all cities'):
      cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
      cities_graph2.floyd(cities_graph2.dist_matrix,cities_graph2.path_matrix)
@@ -407,8 +407,8 @@ with st.sidebar:
        if (i == 1):
         st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
        st.write('Viaje ',i)
-       city_name = cities_graph2.inv_names_dict.get(city[0])
-       st.write(1, '- ', city_name)
-       city_name2 = cities_graph2.inv_names_dict.get(city[1])
-       st.write(2, '- ', city_name2)
+       city_name = cities_graph2.inv_names_dict.get(path[0])
+       st.write('a', '- ', city_name)
+       city_name2 = cities_graph2.inv_names_dict.get(path[1])
+       st.write('b', '- ', city_name2)
        i = i + 1
