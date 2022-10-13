@@ -374,7 +374,8 @@ input_columns = ['City origin (A)', 'City destination (B)']
 
 cat_input = []
 cat_input2 = []
-  
+list_cities = []
+cities_list_2 = []
 with st.sidebar:
   floyd = st.checkbox('Find the shortest path between two cities')
   if (floyd):
@@ -428,7 +429,7 @@ with st.sidebar:
   map_3 = 1
 
 if st.checkbox('Show map of shortest path betwen City origin (A) and City destination (B)'):
- if (cities_list_2 == None):
+ if (len(cities_list_2) == 0):
   st.write('To create the map the map is necessary to select City origin (A) , City destination (B) and press the find shortest path button')
  else:
   map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
@@ -438,7 +439,7 @@ if st.checkbox('Show map of shortest path betwen City origin (A) and City destin
    map_fig_2 = st_folium(map, key="fig2", width=700, height=700)
 
 if st.checkbox('Show map of shortest path between origin (A) and all capital cities with airports'):
- if (list_cities == None):
+ if (len(list_cities) == 0):
   st.write('To create the map the map is necessary to select City origin (A) and press the find shortest path button')
  else:
   map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
