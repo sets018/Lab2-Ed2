@@ -374,7 +374,7 @@ cat_input = []
 cat_input2 = []
   
 with st.sidebar:
-  floyd = st.checkbox('Find the shortest path beetwen two cities')
+  floyd = st.checkbox('Find the shortest path beetwen two cities', key = 'floyd')
   if (floyd):
    for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
@@ -393,7 +393,7 @@ with st.sidebar:
       city_name = cities_graph.inv_names_dict.get(city)
       st.write(i, '- ', city_name)
       i = i + 1
-  prim = st.checkbox('Find the shortest path to traverse all cities from an origin point')
+  prim = st.checkbox('Find the shortest path to traverse all cities from an origin point', key = 'prim')
   if prim:
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
@@ -403,11 +403,12 @@ with st.sidebar:
      if (path_cities != None):
       i = 1
       st.write(path_cities)
-      for city in path_cities:
+      for path in path_cities:
        if (i == 1):
         st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
-        city_name = cities_graph2.inv_names_dict.get(city[0])
-        st.write(i, '- ', city_name)
-        city_name2 = cities_graph2.inv_names_dict.get(city[1])
-        st.write(i + 1, '- ', city_name2)
-        i = i + 2
+       st.write('Viaje ',i)
+       city_name = cities_graph2.inv_names_dict.get(city[0])
+       st.write(1, '- ', city_name)
+       city_name2 = cities_graph2.inv_names_dict.get(city[1])
+       st.write(2, '- ', city_name2)
+       i = i + 1
