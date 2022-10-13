@@ -402,7 +402,7 @@ with st.sidebar:
       i = 1
       for city in path_cities:
        if (i == 1):
-        st.write('the shortest path beetwen ', cat_input[0],' and all capital cities with airports is')
+        st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
         city_name = cities_graph.inv_names_dict.get(city[0])
         st.write(i, '- ', city_name)
         city_name2 = cities_graph.inv_names_dict.get(city[1])
