@@ -408,6 +408,7 @@ with st.sidebar:
       for path in path_cities:
        if (i == 1):
         st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
+        i = 0
        city_name = cities_graph2.inv_names_dict.get(path[0])
        if (temp != city_name):
         list_cities.append(city_name)
@@ -417,4 +418,4 @@ with st.sidebar:
         list_cities.append(city_name2)
         temp = city_name2
       st.write(list_cities)
-      
+     
