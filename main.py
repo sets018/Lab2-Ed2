@@ -370,21 +370,25 @@ if st.checkbox('Show flight routes distribution map'):
 else: 
   map_data.map_created = 1
 
-if (map_2 == 1):
- st.write('Map of shortest path beetwen City origin (A) and City destination (B)')
- map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
- for city in cities_list_2:
-  folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
-  lines = folium.PolyLine(self.lines_points).add_to(map)
-  map_fig_2 = st_folium(map, key="fig2", width=700, height=700)
+if st.checkbox('Show map of shortest path betwen City origin (A) and City destination (B)'):
+ if (cities_list_2 == None):
+  st.write('To create the map the map is necessary to select City origin (A) , City destination (B) and press the find shortest path button')
+ else:
+  map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+  for city in cities_list_2:
+   folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
+   lines = folium.PolyLine(self.lines_points).add_to(map)
+   map_fig_2 = st_folium(map, key="fig2", width=700, height=700)
 
-if (map_3 == 1):
- st.write('Map of shortest path beetwen City origin (A) and all capital cities with airports')
- map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
- for city in list_cities:
-  folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
-  lines = folium.PolyLine(self.lines_points).add_to(map)
-  map_fig_3 = st_folium(map, key="fig3", width=700, height=700)
+if st.checkbox('Show map of shortest path between origin (A) and all capital cities with airports'):
+ if (list_cities == None):
+  st.write('To create the map the map is necessary to select City origin (A) and press the find shortest path button')
+ else:
+  map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+  for city in list_cities:
+   folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
+   lines = folium.PolyLine(self.lines_points).add_to(map)
+   map_fig_3 = st_folium(map, key="fig3", width=700, height=700)
       
       
 input_columns = ['City origin (A)', 'City destination (B)']
@@ -393,7 +397,7 @@ cat_input = []
 cat_input2 = []
   
 with st.sidebar:
-  floyd = st.checkbox('Find the shortest path beetwen two cities')
+  floyd = st.checkbox('Find the shortest path between two cities')
   if (floyd):
    for column in input_columns:
     city_input = user_input(column, 'radio', map_data.city_list, 'list', cat_input)
@@ -409,7 +413,7 @@ with st.sidebar:
      i = 1
      for city in cities:
       if (i == 1):
-       st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
+       st.write('the shortest path betwen ', cat_input[0],' and ', cat_input[1])
       city_name = cities_graph.inv_names_dict.get(city)
       st.write(i, '- ', city_name)
       cities_list_2.append(city_name)
@@ -428,7 +432,7 @@ with st.sidebar:
       temp = 'AAA'
       for path in path_cities:
        if (i == 1):
-        st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
+        st.write('the shortest path between ', cat_input2[0],' and all capital cities with airports is')
         i = 0
        city_name = cities_graph2.inv_names_dict.get(path[0])
        if (temp != city_name):
