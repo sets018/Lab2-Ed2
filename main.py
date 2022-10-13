@@ -360,6 +360,8 @@ class user_input():
         
 st.title('Lab 2 - Estructura de datos 2')
 st.write('Set Salas - Juan Rodiguez') 
+map_2 = 0
+map_3 = 0
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
 
 if st.checkbox('Show flight routes distribution map'):
@@ -367,7 +369,24 @@ if st.checkbox('Show flight routes distribution map'):
   map_data.map_created = 1
 else: 
   map_data.map_created = 1
-  
+
+if (map_2 == 1):
+ st.write('Map of shortest path beetwen City origin (A) and City destination (B)')
+ map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+      for city in cities_list_2:
+        folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
+        lines = folium.PolyLine(self.lines_points).add_to(map)
+      map_fig_2 = st_folium(map, key="fig2", width=700, height=700)
+
+if (map_3 == 1):
+ st.write('Map of shortest path beetwen City origin (A) and all capital cities with airports')
+ map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+      for city in list_cities:
+        folium.Marker(location=[map_data.cities_airports.iloc[city]['lat'], map_data.cities_airports.iloc[city]['lng']],popup = "-Ciudad : " + map_data.cities_airports.iloc[city]['city'] + "\n" + " -Departamento : " + map_data.cities_airports.iloc[city]['admin_name']  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.iloc[city]['IATA']).add_to(map_2)
+        lines = folium.PolyLine(self.lines_points).add_to(map)
+      map_fig_3 = st_folium(map, key="fig3", width=700, height=700)
+      
+      
 input_columns = ['City origin (A)', 'City destination (B)']
 
 cat_input = []
@@ -383,6 +402,7 @@ with st.sidebar:
     cities_graph.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
     usr_input_a = cat_input[0]
     usr_input_b = cat_input[1]
+    cities_list_2 = []
     #cities = cities_graph.test(usr_input_a,usr_input_b)
     cities = cities_graph.extract_usr_path(usr_input_a,usr_input_b)
     if (cities != None):
@@ -392,7 +412,9 @@ with st.sidebar:
        st.write('the shortest path beetwen ', cat_input[0],' and ', cat_input[1])
       city_name = cities_graph.inv_names_dict.get(city)
       st.write(i, '- ', city_name)
+      cities_list_2.append(city_name)
       i = i + 1
+    map_2 = 1
   prim = st.checkbox('Find the shortest path to traverse all cities from an origin point')
   if prim:
     city_input2 = user_input('Select city origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
@@ -420,3 +442,4 @@ with st.sidebar:
       for city in list_cities:
        st.write(j,'- ',city)
        j = j + 1
+  map_3 = 1
