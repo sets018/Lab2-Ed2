@@ -395,16 +395,16 @@ with st.sidebar:
   if st.checkbox('Find the shortest path to traverse all cities from an origin point'):
     city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
-    cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
-    cities_graph2.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
-    path_cities = cities_graph2.print_path(cat_input[0])
-    if (path_cities != None):
-     i = 1
-     for city in path_cities:
-      if (i == 1):
-       st.write('the shortest path beetwen ', cat_input[0],' and all capital cities with airports is')
-      city_name = cities_graph.inv_names_dict.get(city[0])
-      st.write(i, '- ', city_name)
-      city_name2 = cities_graph.inv_names_dict.get(city[1])
-      st.write(i + 1, '- ', city_name2)
-      i = i + 2
+     cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
+     cities_graph2.floyd(cities_graph.dist_matrix,cities_graph.path_matrix)
+     path_cities = cities_graph2.print_path(cat_input[0])
+     if (path_cities != None):
+      i = 1
+      for city in path_cities:
+       if (i == 1):
+        st.write('the shortest path beetwen ', cat_input[0],' and all capital cities with airports is')
+        city_name = cities_graph.inv_names_dict.get(city[0])
+        st.write(i, '- ', city_name)
+        city_name2 = cities_graph.inv_names_dict.get(city[1])
+        st.write(i + 1, '- ', city_name2)
+        i = i + 2
