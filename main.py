@@ -402,6 +402,7 @@ with st.sidebar:
      path_cities = cities_graph2.print_path(cat_input2[0])
      if (path_cities != None):
       i = 1
+      st.write(path_cities)
       for city in path_cities:
        if (i == 1):
         st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
