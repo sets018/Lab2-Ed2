@@ -131,7 +131,10 @@ class data():
       line_coded = self.nodes_dict.get(city_1),self.nodes_dict.get(city_2)
       self.lines_distance_coded.update({line_coded : distance})
       
-map_data = data(colombia_airports, colombia_cities, colombia_flights)
+sw = 0
+if (sw == 0):
+ map_data = data(colombia_airports, colombia_cities, colombia_flights)
+ sw = 1
       
 # Clase para representar el grafo en matrices de adyacencia y de distancia y realizar operaciones (algoritmo de floyd y prim)
 # Tambien cuenta con los metodos para extraer los resutados de estas operaciones 
@@ -435,7 +438,6 @@ if st.checkbox('Show map of shortest path betwen City origin (A) and City destin
   map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
   for city in cities_list_2:
    folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_2)
-   lines = folium.PolyLine(map_data.lines_points).add_to(map_2)
    map_fig_2 = st_folium(map_2, key="fig2", width=700, height=700)
 
 if st.checkbox('Show map of shortest path between origin (A) and all capital cities with airports'):
@@ -445,5 +447,4 @@ if st.checkbox('Show map of shortest path between origin (A) and all capital cit
   map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
   for city in list_cities:
    folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_3)
-   lines = folium.PolyLine(map_data.lines_points).add_to(map_3)
    map_fig_3 = st_folium(map_3, key="fig3", width=700, height=700)
