@@ -395,7 +395,7 @@ with st.sidebar:
       i = i + 1
   prim = st.checkbox('Find the shortest path to traverse all cities from an origin point')
   if prim:
-    city_input2 = user_input('City origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
+    city_input2 = user_input('Select city origin (A)', 'radio', map_data.city_list, 'list', cat_input2)
     if st.button('Find shortest path from (A) to traverse all cities'):
      cities_graph2 = graph(map_data.vertices,map_data.edges,map_data.lines_distance_coded,map_data.nodes_dict,map_data.names_dict)
      cities_graph2.floyd(cities_graph2.dist_matrix,cities_graph2.path_matrix)
@@ -406,9 +406,9 @@ with st.sidebar:
       for path in path_cities:
        if (i == 1):
         st.write('the shortest path beetwen ', cat_input2[0],' and all capital cities with airports is')
-       st.write('Viaje ',i)
        city_name = cities_graph2.inv_names_dict.get(path[0])
-       st.write('a', '- ', city_name)
-       city_name2 = cities_graph2.inv_names_dict.get(path[1])
-       st.write('b', '- ', city_name2)
+       st.write(i, '- ', city_name)
        i = i + 1
+       city_name2 = cities_graph2.inv_names_dict.get(path[1])
+       st.write(i, '- ', city_name2)
+       
