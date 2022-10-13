@@ -431,6 +431,15 @@ with st.sidebar:
        j = j + 1
   map_3 = 1
   
+if st.checkbox('Show map of shortest path between origin (A) and all capital cities with airports'):
+ if (len(list_cities) == 0):
+  st.write('To create the map the map is necessary to select City origin (A) and press the find shortest path button')
+ else:
+  map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
+  for city in list_cities:
+   folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_3)
+  map_fig_3 = st_folium(map_3, key="fig3", width=700, height=700)
+  
 if st.checkbox('Show map of shortest path betwen City origin (A) and City destination (B)'):
  if (len(cities_list_2) == 0):
   st.write('To create the map the map is necessary to select City origin (A) , City destination (B) and press the find shortest path button')
@@ -440,11 +449,3 @@ else:
   folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_2)
  map_fig_2 = st_folium(map_2, key="fig2", width=700, height=700)
  
-if st.checkbox('Show map of shortest path between origin (A) and all capital cities with airports'):
- if (len(list_cities) == 0):
-  st.write('To create the map the map is necessary to select City origin (A) and press the find shortest path button')
- else:
-  map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
-  for city in list_cities:
-   folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_3)
-  map_fig_3 = st_folium(map_3, key="fig3", width=700, height=700)
