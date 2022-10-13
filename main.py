@@ -358,11 +358,11 @@ class user_input():
             self.user_input = st.slider(self.var, 0, max(self.data), 1)
         st.write(self.var,": ",self.user_input)
         
-st.title('Flight map')
-st.write('Placeholder') 
+st.title('Lab 2 - Estructura de datos 2')
+st.write('Set Salas - Juan Rodiguez') 
 map_data = data(colombia_airports, colombia_cities, colombia_flights)
 
-if st.checkbox('Show map'):
+if st.checkbox('Show flight routes distribution map'):
   map_data.create_map()
   map_data.map_created = 1
 else: 
@@ -403,7 +403,6 @@ with st.sidebar:
      if (path_cities != None):
       i = 1
       list_cities = []
-      st.write(path_cities)
       temp = 'AAA'
       for path in path_cities:
        if (i == 1):
@@ -417,5 +416,7 @@ with st.sidebar:
        if (temp != city_name2):
         list_cities.append(city_name2)
         temp = city_name2
-      st.write(list_cities)
-     
+      j = 1
+      for city in list_cities:
+       st.write(j,'- ',city)
+       j = j + 1
