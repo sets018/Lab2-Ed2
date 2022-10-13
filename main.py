@@ -430,9 +430,10 @@ with st.sidebar:
        st.write(j,'- ',city)
        j = j + 1
   map_3 = 1
-
-if st.checkbox('Show map of shortest path betwen City origin (A) and City destination (B)'):
- if (len(cities_list_2) == 0):
+@st.cache
+def get_map_1():
+ if st.checkbox('Show map of shortest path betwen City origin (A) and City destination (B)'):
+  if (len(cities_list_2) == 0):
   st.write('To create the map the map is necessary to select City origin (A) , City destination (B) and press the find shortest path button')
  else:
   map_2 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
