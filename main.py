@@ -444,6 +444,6 @@ if st.checkbox('Show map of shortest path between origin (A) and all capital cit
  else:
   map_3 = folium.Map(location=[4,-74], tiles="OpenStreetMap", zoom_start=5)
   for city in list_cities:
-   folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_2)
+   folium.Marker(location=[map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lat'].iloc[0], map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['lng'].iloc[0]],popup = "-Ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['city'].iloc[0] + "\n" + " -Departamento : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['admin_name'].iloc[0]  + "\n" + "-Codigo ciudad : " + map_data.cities_airports.loc[map_data.cities_airports['city'] == city]['IATA'].iloc[0]).add_to(map_3)
    lines = folium.PolyLine(map_data.lines_points).add_to(map_3)
    map_fig_3 = st_folium(map_3, key="fig3", width=700, height=700)
